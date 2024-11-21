@@ -1,10 +1,10 @@
 import React from "react";
 import Sidebar from "../components/Sidebar";
 import TopBar from "../components/TopBar";
-import TextInput from "../components/Input";
 import AspectRatioSelector from "@/components/AspectRatioSelector";
 import LyricsAndTranscript from "@/components/lyricsandtranscript";
 import MusicVideoPlayer from "@/components/MusicVideoPlayer";
+import InputPrompt from "../components/Input";
 
 function App() {
   return (
@@ -13,7 +13,7 @@ function App() {
       <div className="flex-1 ml-64">
         <TopBar />
         <main className="p-4">
-          <TextInput />
+          <InputPrompt />
           <AspectRatioSelector />
           <LyricsAndTranscript />
           <MusicVideoPlayer />
