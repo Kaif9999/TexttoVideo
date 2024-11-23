@@ -1,6 +1,6 @@
 export default function AspectRatioSelector() {
     return (
-      <div className="bg-white shadow-md rounded-md mt-3 mx-6 p-4">
+      <div className="bg-white shadow-md rounded-md mt-3 mx-0 sm:mx-6 p-4">
         <label className="flex text-sm font-medium text-gray-700">
           Aspect Ratio
         </label>

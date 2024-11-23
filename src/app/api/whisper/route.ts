@@ -5,9 +5,14 @@ const replicate = new Replicate({
   auth: process.env.REPLICATE_API_KEY || "",
 });
 
+interface RequestBody {
+  prompt: string;
+  action: string; // You can further restrict this to specific actions if needed
+}
+
 export async function POST(req: Request) {
   try {
-    const { prompt, action } = await req.json();
+    const { prompt, action }: RequestBody = await req.json(); // Added type definition
 
     // Validate input
     if (!prompt) {
@@ -18,6 +23,14 @@ export async function POST(req: Request) {
     }
 
     // Check action type
+    const validActions = ["generateLyrics"]; // Define valid actions
+    if (!validActions.includes(action)) {
+      return NextResponse.json(
+        { error: "Invalid action provided!" },
+        { status: 400 }
+      );
+    }
+
     if (action === "generateLyrics") {
       const model = "google-deepmind/gemma-2b-it:dff94eaf770e1fc211e425a50b51baa8e4cac6c39ef074681f9e39d778773626"; // Replace with actual Replicate model ID
 

@@ -78,7 +78,7 @@ const InputPrompt: React.FC = () => {
   };
 
   return (
-    <div className="bg-white shadow-md rounded-md mt-6 p-6 relative max-w-3xl mx-auto">
+    <div className="bg-white shadow-md rounded-md mt-6 p-4 relative max-w-full sm:max-w-3xl mx-auto">
       <h1 className="text-xl font-bold text-gray-800 text-center mb-6">
         Prompt to Lyrics and Music Generator
       </h1>
