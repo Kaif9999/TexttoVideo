@@ -1,0 +1,97 @@
+import { NextApiRequest, NextApiResponse } from 'next';
+    import Replicate from "replicate";
+
+// Export default function to handle HTTP requests
+async function handler(_request: Request): Promise<Response> {
+
+const replicate = new Replicate({
+  auth: "",
+});
+    
+    let data = await _request.text();
+    console.log(data);
+    
+    let dataObj = JSON.parse(data);
+    let prompt = dataObj['prompt'];
+
+    const input = {
+      top_k: 50,
+      top_p: 0.9,
+prompt: prompt,
+      max_tokens: 8192,
+      min_tokens: 0,
+      temperature: 0.6,
+      prompt_template: "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n\nYou are a helpful assistant<|eot_id|><|start_header_id|>user<|end_header_id|>\n\n{prompt}<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n\n",
+      presence_penalty: 0,
+      frequency_penalty: 0,
+    };
+    
+    
+    const prediction = await replicate.predictions.create({
+        model: "meta/meta-llama-3-70b-instruc
+const prediction = await replicate.predictions.create({
+        model: "meta/meta-llama-3-70b-instruct",
+        input,
+        stream: true, 
+    });
+    console.log(prediction);
+    //return "Done";
+    return Response.json({ url: prediction.urls.stream });
+    // Returns {"url": "https://replicate-stream..."}
+}
+
+export { handler as POST };
+Akshay Taneja
+18:12
+const url = await response.data.url;
+        
+        const source = new EventSource(url);
+        let output = "";
+        let done = false;
+        source.addEventListener("output", (evt) => {
+          if(done == false) { done=true; document.getElementById("generateOutput").classList.add('hidden'); }
+          console.log(evt.data); //=> "Here"
+            output = output + evt.data;
+            setCurrentMessage(output);
+        });
+        source.addEventListener("done", (evt) => {
+console.log("output :", output);
+            appendMessage("Llama3-70b", output);
+            setCurrentMessage("");
+          console.log("stream is complete");
+        });
+    }
+const response = await axios.post("/api/replicate/llama370", JSON.stringify(data), {headers: headers});
+Akshay Taneja
+18:15
+const id = response.data.data.id;
+        
+        // Loop until status is "completed"
+        while (true) {
+            // Send GET request to check status
+            const response2 = await axios.post(statusUrl, {id: id}, {headers: headers});
+    
+            const status = response2.data.data.status;
+            
+            // Check if status is "completed"
+            if (status === "succeeded") {
+                output = response2.data.data.output;
+                return {"status": statu
+Akshay Taneja
+18:17
+import { NextApiRequest, NextApiResponse } from 'next';
+    import Replicate from "replicate";
+
+// Export default function to handle HTTP requests
+async function handler(request: Request): Promise<Response> {
+    //let data = await request.json();
+    let id = await request.text();
+    console.log(typeof id);
+
+const replicate = new Replicate({
+  auth: "",
+});
+    const output = await replicate.predictions.get(JSON.parse(id)['id']);
+    
+   console.log(output);
+    return Response.json({ data: ou

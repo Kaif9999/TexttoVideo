@@ -34,6 +34,8 @@ const InputPrompt: React.FC = () => {
         alert(data.error);
       } else {
         setLyrics(data.lyrics); // Update lyrics in state
+        // Automatically generate music once lyrics are generated
+        handleGenerateMusic(data.lyrics);
       }
     } catch (error) {
       console.error("Error generating lyrics:", error);
@@ -44,8 +46,8 @@ const InputPrompt: React.FC = () => {
   };
 
   // Function to generate music from the lyrics
-  const handleGenerateMusic = async () => {
-    if (!lyrics) {
+  const handleGenerateMusic = async (generatedLyrics: string) => {
+    if (!generatedLyrics) {
       alert("Lyrics must be generated first!");
       return;
     }
@@ -59,7 +61,7 @@ const InputPrompt: React.FC = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ lyrics, action: "generateMusic" }),
+        body: JSON.stringify({ lyrics: generatedLyrics, action: "generateMusic" }),
       });
 
       const data = await res.json();
@@ -110,17 +112,6 @@ const InputPrompt: React.FC = () => {
         <div className="mt-6 bg-gray-100 p-4 rounded-lg shadow-sm">
           <h3 className="text-lg font-medium text-gray-800 mb-3">Generated Lyrics:</h3>
           <p className="text-gray-700 whitespace-pre-wrap">{lyrics}</p>
-
-          {/* Generate music button */}
-          <button
-            onClick={handleGenerateMusic}
-            disabled={loadingMusic}
-            className={`mt-4 w-full py-2 px-4 rounded-lg font-bold text-white ${
-              loadingMusic ? "bg-gray-400 cursor-not-allowed" : "bg-green-600 hover:bg-green-700 transition duration-200"
-            }`}
-          >
-            {loadingMusic ? "Generating Music..." : "Generate Music"}
-          </button>
         </div>
       )}
 

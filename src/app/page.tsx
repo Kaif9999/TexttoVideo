@@ -14,7 +14,7 @@ function App() {
         <TopBar />
         <main className="p-4">
           <InputPrompt />
-          <AspectRatioSelector />
+          {/* <AspectRatioSelector /> */}
           <LyricsAndTranscript />
           <MusicVideoPlayer />
         </main>
