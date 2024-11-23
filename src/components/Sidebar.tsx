@@ -2,11 +2,16 @@
 import { useState } from "react";
 
 export default function Sidebar() {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className={`fixed bg-white rounded-md top-0 left-0 h-[calc(100%-2rem)] m-4 shadow-lg ${isOpen ? "w-64" : "w-16"} transition-width duration-300 
-      shadow-2xl`}>
+    <div className={`fixed bg-white rounded-md top-0 left-0 h-full m-4 shadow-lg ${isOpen ? "w-64" : "w-0"} transition-width duration-300 shadow-2xl lg:w-64 lg:block`}>
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="lg:hidden p-2 bg-blue-600 text-white rounded-md"
+      >
+        {isOpen ? "Close Menu" : "Open Menu"}
+      </button>
       <div className="flex items-center justify-between p-4">
         <h2 className="text-lg font-semibold">New project</h2>
         <button onClick={() => setIsOpen(!isOpen)} className="text-gray-500">

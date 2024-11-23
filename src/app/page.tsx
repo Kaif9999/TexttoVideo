@@ -8,9 +8,12 @@ import InputPrompt from "../components/Input";
 
 function App() {
   return (
-    <div className="flex">
+    <div className="flex flex-col sm:flex-row">
+      <div className="hidden lg:block">
+
       <Sidebar />
-      <div className="flex-1 ml-64">
+      </div>
+      <div className="flex-1 ml-0 sm:ml-64">
         <TopBar />
         <main className="p-4">
           <InputPrompt />

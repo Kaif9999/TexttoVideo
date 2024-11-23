@@ -33,7 +33,7 @@ export default function MusicVideoPlayer() {
       </div>
       <button
         onClick={fetchVideo}
-        className="mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
+        className="mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 w-full sm:w-auto"
       >
         Fetch Video
       </button>
