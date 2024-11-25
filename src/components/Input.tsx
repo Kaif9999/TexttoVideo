@@ -56,12 +56,17 @@ const InputPrompt: React.FC = () => {
     setMusicUrl(""); // Clear previous music
 
     try {
-      const res = await fetch("/api/whisper", {
+      const res = await fetch("/api/suno", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ lyrics: generatedLyrics, action: "generateMusic" }),
+        body: JSON.stringify({
+          lyrics: generatedLyrics,
+          modelVersion: "chirp-v3-0",
+          makeInstrumental: true,
+          title: "My Generated Song",
+        }),
       });
 
       const data = await res.json();
@@ -101,7 +106,9 @@ const InputPrompt: React.FC = () => {
         onClick={handleGenerateLyrics}
         disabled={loadingLyrics}
         className={`mt-4 w-full py-2 px-4 rounded-lg font-bold text-white ${
-          loadingLyrics ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700 transition duration-200"
+          loadingLyrics
+            ? "bg-gray-400 cursor-not-allowed"
+            : "bg-blue-600 hover:bg-blue-700 transition duration-200"
         }`}
       >
         {loadingLyrics ? "Generating Lyrics..." : "Generate Lyrics"}
@@ -110,20 +117,21 @@ const InputPrompt: React.FC = () => {
       {/* Display generated lyrics */}
       {lyrics && (
         <div className="mt-6 bg-gray-100 p-4 rounded-lg shadow-sm">
-          <h3 className="text-lg font-medium text-gray-800 mb-3">Generated Lyrics:</h3>
+          <h3 className="text-lg font-medium text-gray-800 mb-3">
+            Generated Lyrics:
+          </h3>
           <p className="text-gray-700 whitespace-pre-wrap">{lyrics}</p>
         </div>
       )}
+      <button onClick={() => handleGenerateMusic(lyrics)} className="mx-6 my-5 px-4 py-2 text-white bg-red-500 rounded-md">Generate Music</button>
 
       {/* Display music player */}
       {musicUrl && (
         <div className="mt-6">
-          <h3 className="text-lg font-medium text-gray-800 mb-3">Generated Music:</h3>
-          <audio
-            controls
-            src={musicUrl}
-            className="w-full rounded-lg"
-          >
+          <h3 className="text-lg font-medium text-gray-800 mb-3">
+            Generated Music:
+          </h3>
+          <audio controls src={musicUrl} className="w-full rounded-lg">
             Your browser does not support the audio element.
           </audio>
         </div>
