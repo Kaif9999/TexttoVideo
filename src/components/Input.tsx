@@ -63,7 +63,7 @@ const InputPrompt: React.FC = () => {
         },
         body: JSON.stringify({
           lyrics: generatedLyrics,
-          modelVersion: "chirp-v3-0",
+          modelVersion: "music-u",
           makeInstrumental: true,
           title: "My Generated Song",
         }),
@@ -104,7 +104,7 @@ const InputPrompt: React.FC = () => {
       {/* Generate lyrics button */}
       <button
         onClick={handleGenerateLyrics}
-        disabled={loadingLyrics}
+        disabled={loadingLyrics || loadingMusic}
         className={`mt-4 w-full py-2 px-4 rounded-lg font-bold text-white ${
           loadingLyrics
             ? "bg-gray-400 cursor-not-allowed"
@@ -123,7 +123,21 @@ const InputPrompt: React.FC = () => {
           <p className="text-gray-700 whitespace-pre-wrap">{lyrics}</p>
         </div>
       )}
-      <button onClick={() => handleGenerateMusic(lyrics)} className="mx-6 my-5 px-4 py-2 text-white bg-red-500 rounded-md">Generate Music</button>
+
+      {/* Display music generation button only after lyrics are available */}
+      {lyrics && !musicUrl && (
+        <button
+          onClick={() => handleGenerateMusic(lyrics)}
+          disabled={loadingMusic}
+          className={`mt-4 w-full py-2 px-4 rounded-lg font-bold text-white ${
+            loadingMusic
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-green-600 hover:bg-green-700 transition duration-200"
+          }`}
+        >
+          {loadingMusic ? "Generating Music..." : "Generate Music"}
+        </button>
+      )}
 
       {/* Display music player */}
       {musicUrl && (

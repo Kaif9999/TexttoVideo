@@ -2,8 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
-    const { lyrics, modelVersion, makeInstrumental, title } = body;
+    const { lyrics } = await req.json();
 
     if (!lyrics) {
       return NextResponse.json(
@@ -19,38 +18,34 @@ export async function POST(req: NextRequest) {
         "x-api-key": process.env.PIAPI_API_KEY || "",
       },
       body: JSON.stringify({
-        model: "suno",
-        task_type: "generate_music_custom",
+        model: "music-u",
+        task_type: "music_generation",
         input: {
           prompt: lyrics,
-          model_version: modelVersion || "chirp-v3-0",
-          make_instrumental: makeInstrumental || false,
-          title: title || "Generated Music",
+          lyrics_type: "instrumental",
+          seed: Math.floor(Math.random() * 1000000000), // Random seed for diversity
         },
       }),
     });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      return NextResponse.json(
-        { error: errorData?.message || "Failed to generate music." },
-        { status: response.status }
-      );
-    }
-
     const data = await response.json();
-    const musicUrl = data?.data?.output?.musicUrl;
 
-    if (!musicUrl) {
+    if (!response.ok || !data?.data?.output?.musicUrl) {
       return NextResponse.json(
-        { error: "Music generation failed. No URL returned." },
+        { error: "Failed to generate music." },
         { status: 500 }
       );
     }
 
-    return NextResponse.json({ musicUrl });
+    return NextResponse.json({
+      message: "Music generated successfully!",
+      musicUrl: data.data.output.musicUrl,
+    });
   } catch (error) {
     console.error("Error in /api/suno:", error);
-    return NextResponse.json({ error: "Internal server error." }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error." },
+      { status: 500 }
+    );
   }
 }
