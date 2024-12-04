@@ -20,7 +20,7 @@ const InputPrompt: React.FC = () => {
     setMusicUrl(""); // Clear previous music
 
     try {
-      const res = await fetch("/api/whisper", {
+      const res = await fetch("/api/gemma", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
