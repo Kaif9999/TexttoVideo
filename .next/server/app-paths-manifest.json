@@ -1,3 +1,9 @@
 {
-  "/api/flux1/route": "app/api/flux1/route.js"
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/flux1/route": "app/api/flux1/route.js",
+  "/api/gemma/route": "app/api/gemma/route.js",
+  "/api/suno/route": "app/api/suno/route.js",
+  "/api/whisper/route": "app/api/whisper/route.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/page": "app/page.js"
 }

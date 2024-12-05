@@ -26,7 +26,7 @@ export async function POST(req: Request) {
     };
 
     // Call the Replicate API to generate images based on the text
-    const output: string[] = await replicate.run("black-forest-labs/flux-dev-lora", { input });
+    const output = await replicate.run("black-forest-labs/flux-dev-lora", { input }) as string[];
 
     if (!Array.isArray(output) || output.length === 0) {
       return NextResponse.json(
