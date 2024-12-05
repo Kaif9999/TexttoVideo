@@ -1,1 +1,11 @@
-{"pages":{},"app":{"/home/kaif9999/genvr/TexttoVideo/src/app/layout":["static/media/463dafcda517f24f-s.p.woff","static/media/4473ecc91f70f139-s.p.woff"]},"appUsingSizeAdjust":true,"pagesUsingSizeAdjust":false}
+{
+  "app": {
+    "[project]/src/app/page": [
+      "static/media/GeistVF-s.p.7fe29570.woff",
+      "static/media/GeistMonoVF-s.p.a9159d35.woff"
+    ]
+  },
+  "appUsingSizeAdjust": true,
+  "pages": {},
+  "pagesUsingSizeAdjust": false
+}

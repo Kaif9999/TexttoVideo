@@ -3,7 +3,7 @@ import Replicate from "replicate";
 import { writeFile } from "node:fs/promises";
 import path from "path";
 import fs from "fs";
-import fetch from "node-fetch"; // Add fetch for downloading files
+import fetch from "node-fetch";
 
 // Initialize Replicate API client
 const replicate = new Replicate({
@@ -26,7 +26,7 @@ export async function POST(req: Request) {
     };
 
     // Call the Replicate API to generate images based on the text
-    const output = await replicate.run("black-forest-labs/flux-dev-lora", { input }) as string[];
+    const output = await replicate.run("black-forest-labs/flux-dev-lora", { input });
 
     if (!Array.isArray(output) || output.length === 0) {
       return NextResponse.json(
@@ -42,18 +42,25 @@ export async function POST(req: Request) {
     }
 
     // Prepare an array to hold the file paths of the saved images
-    const imagePaths = [];
+    const imagePaths: string[] = [];
 
     // Iterate over each output (assuming URLs are returned)
     for (const [index, url] of output.entries()) {
       const response = await fetch(url);
+      
+      // Check if fetch was successful
       if (!response.ok) {
         throw new Error(`Failed to fetch image from ${url}`);
       }
+      
       const imageBuffer = await response.arrayBuffer();
       const filePath = path.join(outputDir, `output_${index}.webp`);
-      await writeFile(filePath, Buffer.from(imageBuffer)); // Save as binary
-      imagePaths.push(`/generated/output_${index}.webp`); // Store the relative path for frontend access
+      
+      // Save the image as binary to the local file system
+      await writeFile(filePath, Buffer.from(imageBuffer));
+
+      // Store the relative path for frontend access
+      imagePaths.push(`/generated/output_${index}.webp`);
     }
 
     // Return the generated image URLs
