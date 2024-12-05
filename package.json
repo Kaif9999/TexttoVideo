@@ -1,5 +1,5 @@
 {
-  "name": "text-video",
+  "name": "textvideo",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,11 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@radix-ui/react-slot": "^1.1.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "framer-motion": "^11.13.1",
+    "lucide-react": "^0.465.0",
     "next": "15.0.3",
-    "playht": "^0.14.0",
     "react": "19.0.0-rc-66855b96-20241106",
     "react-dom": "19.0.0-rc-66855b96-20241106",
-    "replicate": "^1.0.1"
+    "replicate": "^1.0.1",
+    "tailwind-merge": "^2.5.5",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@types/node": "^20",

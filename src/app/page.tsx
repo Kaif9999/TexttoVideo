@@ -1,27 +1,9 @@
-import React from "react";
-import Sidebar from "../components/Sidebar";
-import TopBar from "../components/TopBar";
-import AspectRatioSelector from "@/components/AspectRatioSelector";
-import LyricsAndTranscript from "@/components/lyricsandtranscript";
-import MusicVideoPlayer from "@/components/MusicVideoPlayer";
-import InputPrompt from "../components/Input";
+import AudioUpload from "@/components/audio-upload";
+import Image from "next/image";
 
-function App() {
+export default function Home() {
   return (
-    <div className="flex flex-col sm:flex-row">
-      <div className="hidden lg:block">
 
-      <Sidebar />
-      </div>
-      <div className="flex-1 ml-0 sm:ml-64">
-        <TopBar />
-        <main className="p-4">
-          <InputPrompt />
-         
-        </main>
-      </div>
-    </div>
+      <AudioUpload />
   );
 }
-
-export default App;

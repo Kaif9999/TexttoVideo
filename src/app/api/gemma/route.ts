@@ -42,6 +42,7 @@ export async function POST(req: Request) {
           prompt: `Write song lyrics based on the following idea in not more than 200 words: "${prompt}"`,
         },
       });
+      console.log(lyrics)
 
       console.log(lyrics);
       if (!lyrics || !Array.isArray(lyrics)) {
