@@ -1,7 +1,5 @@
 {
   "/page": "app/page.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
   "/api/whisper/route": "app/api/whisper/route.js",
-  "/api/flux1/route": "app/api/flux1/route.js",
-  "/_not-found/page": "app/_not-found/page.js"
+  "/api/flux1/route": "app/api/flux1/route.js"
 }
