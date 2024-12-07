@@ -1,18 +1,22 @@
+import { v2 as cloudinary } from "cloudinary";
 import { NextResponse } from "next/server";
 import Replicate from "replicate";
-import { writeFile } from "node:fs/promises";
-import path from "path";
-import fs from "fs";
 import fetch from "node-fetch";
 
-// Initialize Replicate API client
+// Cloudinary Configuration
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
 const replicate = new Replicate({
-  auth: process.env.REPLICATE_API_KEY || "", // Ensure the API key is set
+  auth: process.env.REPLICATE_API_KEY || "",
 });
 
 export async function POST(req: Request) {
   try {
-    const { text } = await req.json(); // Get the text input from the request body
+    const { text } = await req.json();
 
     if (!text || typeof text !== "string") {
       return NextResponse.json(
@@ -21,12 +25,11 @@ export async function POST(req: Request) {
       );
     }
 
-    const input = {
-      prompt: text, // Use the transcribed text as the prompt
-    };
+    const input = { prompt: text };
 
-    // Call the Replicate API to generate images based on the text
-    const output = await replicate.run("black-forest-labs/flux-dev-lora", { input });
+    const output = await replicate.run("black-forest-labs/flux-dev-lora", {
+      input,
+    });
 
     if (!Array.isArray(output) || output.length === 0) {
       return NextResponse.json(
@@ -35,42 +38,36 @@ export async function POST(req: Request) {
       );
     }
 
-    // Create an output folder if it doesn't exist
-    const outputDir = path.join(process.cwd(), "public", "generated");
-    if (!fs.existsSync(outputDir)) {
-      fs.mkdirSync(outputDir, { recursive: true });
-    }
+    const cloudinaryUrls: string[] = [];
 
-    // Prepare an array to hold the file paths of the saved images
-    const imagePaths: string[] = [];
-
-    // Iterate over each output (assuming URLs are returned)
     for (const [index, url] of output.entries()) {
       const response = await fetch(url);
-      
-      // Check if fetch was successful
+
       if (!response.ok) {
         throw new Error(`Failed to fetch image from ${url}`);
       }
-      
-      const imageBuffer = await response.arrayBuffer();
-      const filePath = path.join(outputDir, `output_${index}.webp`);
-      
-      // Save the image as binary to the local file system
-      await writeFile(filePath, Buffer.from(imageBuffer));
 
-      // Store the relative path for frontend access
-      imagePaths.push(`/generated/output_${index}.webp`);
+      const imageBuffer = await response.arrayBuffer();
+
+      // Upload the image buffer to Cloudinary
+      const result = await cloudinary.uploader.upload_stream({
+        folder: "generated-images",
+        public_id: `output_${index}`,
+        format: "webp",
+      },
+      (error, result) => {
+        if (error) throw new Error("Failed to upload to Cloudinary.");
+        return result.secure_url;
+      });
+
+      cloudinaryUrls.push(result.secure_url);
     }
 
-    // Return the generated image URLs
     return NextResponse.json({
-      imageUrls: imagePaths, // Array of image URLs
+      imageUrls: cloudinaryUrls,
     });
   } catch (error) {
-    console.error("Error while generating images:", error);
-
-    // Provide a user-friendly error message and log the actual error for debugging
+    console.error("Error while generating or uploading images:", error);
     return NextResponse.json(
       { error: "An error occurred while processing your request." },
       { status: 500 }
