@@ -249,9 +249,9 @@ async function POST(req) {
             if (!response.ok) {
                 throw new Error(`Failed to fetch image from ${url}`);
             }
-            const imageBuffer = await response.buffer();
+            const imageBuffer = await response.arrayBuffer();
             // Upload the image to Cloudinary
-            const uploadResult = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$cloudinary$2f$cloudinary$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["v2"].uploader.upload(`data:image/jpeg;base64,${imageBuffer.toString('base64')}`, {
+            const uploadResult = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$cloudinary$2f$cloudinary$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["v2"].uploader.upload(`data:image/jpeg;base64,${Buffer.from(imageBuffer).toString('base64')}`, {
                 folder: "generated-images"
             });
             if (!uploadResult?.secure_url) {

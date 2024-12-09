@@ -50,11 +50,11 @@ export async function POST(req: Request) {
         throw new Error(`Failed to fetch image from ${url}`);
       }
 
-      const imageBuffer = await response.buffer();
+      const imageBuffer = await response.arrayBuffer();
 
       // Upload the image to Cloudinary
       const uploadResult = await cloudinary.uploader.upload(
-        `data:image/jpeg;base64,${imageBuffer.toString('base64')}`,
+        `data:image/jpeg;base64,${Buffer.from(imageBuffer).toString('base64')}`,
         {
           folder: "generated-images",
         }
